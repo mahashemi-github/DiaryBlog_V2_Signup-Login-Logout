@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <title><%= title %></title>
+</head>
+
+<body>
+  <div class="blog-container">
+
+    <header class="blog-header">
+      <h1><img 
+        class="header-image" 
+        src="/icons8-social-network-64.png" 
+        style="vertical-align: text-top; " 
+        width="40" height="40"/> DiaryBlog
+      </h1>
+      <div class="item-subheader">
+        <div class="header-subtext" >Blog your Social Diaries</div>
+        <% if (user) { %>
+          <div class="account-quote">Log out before leaving DiaryBlog</div>
+          <div class="account-btn-logout"><a href="/logout">Log out</a></div>
+        <% } else { %>
+          <div class="account-quote">Log in to Blog your Social Diaries</div>
+          <div class="account-btn-login">My Account</div>
+        <% } %>
+      </div>
+    </header>  
+
+    <main class="blog-main">
+
+      <div class="blog-sidebar">
+        <ul>
+          <li class="allblog"> All Blogs </li>
+          <li class="newblog"><a href="/create"> New Blog </a></li>
+        </ul>
+      </div>
+      
+      <div class="blog-posts"> 
+
+        <% if (blogs.length > 0) { %>
+          <% blogs.forEach(blog => { 
+            const dateraw = blog.createdAt;
+            const date1 = dateraw.toString().slice(4,7);
+            const date2 = dateraw.toString().slice(8,10);
+            const date3 = dateraw.toString().slice(11,15);
+            const date = `${date2} ${date1} ${date3}` %>
+            <div class="post">
+              <% if(user) { %> 
+                <% if (blog.author === user.username) { %>
+                  <a class="deleteblogbtn" data-doc="<%= blog._id %>">Delete Blog</a>
+                <% } %>
+              <% } %>
+              <h2 class="title"><%= blog.title %></h2>            
+              <p class="meta">By <%= blog.author %>,  <span> <%= date %></span></p>
+              <p class="body"><%= blog.body %></p>
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="post">
+          <p>There are no blogs to display...</p>
+          </div>
+        <% } %>
+
+        <div id="id01" class="modal" data-doc="<%= user %>">
+          <span class="close" title="Close Modal">&times;</span>
+          <div class="signuplogin-container">  
+            <div class="vl">
+                <span class="vl-innertext">OR</span>
+            </div>
+            <div class="item1">
+              <form class="formlo">
+                <h2>Login</h2>
+                <label for="email">Email</label>
+                <input type="text" name="email" placeholder="Email" required />
+                <div class="emaillo error"></div>
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="Password"  required />
+                <div class="passwordlo error"></div>
+                <button class="login">Log in</button>
+              </form>
+
+              <hr style=" border: 1px dashed; margin-top: 8%;" width="270px">
+              <div class="forget">
+                <h3>Forgot password?</h3> 
+                <div class="confiremailbox"> 
+                  <label for="emailpassreset">Enter your registered email</label>
+                  <input class="emailpassresetinput" type="text" name="emailpassreset" placeholder="Enter your email..." required />
+                  <div class="emailpassreseterr error"></div>
+                  <button class="confirmemailbtn">Confirm Email</button>
+                </div> 
+  
+                <div class="resetpasswordbox"> 
+                  <label for="passwordreset">New password</label>
+                  <input class="passwordresetinput" type="password" name="passwordreset" placeholder="Enter new password..."  required />
+                  <div class="passwordreseterr error"></div>
+                  <button class="passwordresetbtn">Password reset</button>
+                </div> 
+                <div class="passwordresetdone">Password reset successfully. </br> Log in to continue. </div>
+              </div>
+            </div>    
+            <div class="item2">            
+              <form class="formsi">
+                <h2>Signup</h2>
+                <label for="username">Username</label>
+                <input type="text" name="username" placeholder="Username" required />
+                <div class="usernamesi error"></div>
+                <label for="email">Email</label>
+                <input type="text" name="email" placeholder="Recovery Email" required />
+                <div class="emailsi error"></div>
+                <label for="password">Password</label>
+                <input type="password" name="password" placeholder="Password" required />
+                <div class="passwordsi error"></div>
+                <button class="signup">Sign up</button>
+              </form>
+            </div>
+          </div>
+        </div>  
+
+      </div>
+
+    </main>
+
+  </div>
+
+<script src="js/login.js"></script>
+<script src="js/signup.js"></script>
+<script src="js/forgetpass.js"></script>
+
+<script>
+const li = document.querySelectorAll('li');
+window.onload = function() {
+    li[0].className +=  " active";
+};
+
+li[0].onclick = function() {
+    window.location.href = 'http://localhost:3000/blogs';
+};  
+
+// ---------------------------------------------------
+const accountbtn = document.querySelector(".account-btn-login");
+const modal = document.querySelector("#id01");
+const closex = document.querySelector(".close");
+const blogcontainer = document.querySelector(".blog-container");
+
+closex.onclick =  function() {
+    document.getElementById('id01').style.display='none';
+}
+
+if (!modal.dataset.doc) {
+    accountbtn.onclick =  function() {
+        document.getElementById('id01').style.display='block';
+    }
+}
+
+// ---------------------------------------------------
+const deleteblogbtn = document.getElementsByClassName('deleteblogbtn');
+let i;
+
+for (i = 0; i < deleteblogbtn.length; i++) {
+    const endpoint = `/blogs/${deleteblogbtn[i].dataset.doc}`;
+    deleteblogbtn[i].addEventListener('click', (e) => {
+        fetch(endpoint, {
+            method: "DELETE"
+        })
+        .then(response => response.json())
+        .then(data => window.location.href = data.redirect)
+        .catch(err => console.log(err));
+    })
+}
+
+</script>  
+
+</body>
+</html>

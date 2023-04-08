@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <title><%= title %></title>
+</head>
+
+<body>
+  <div class="blog-container">
+
+    <header class="blog-header">
+      <h1><img 
+        class="header-image" 
+        src="/icons8-social-network-64.png" 
+        style="vertical-align: text-top; " 
+        width="40" height="40"/> DiaryBlog
+      </h1>
+      <div class="item-subheader">
+      <div class="header-subtext" >Blog your Social Diaries</div>
+      <div class="account-quote">Log out before leaving DiaryBlog</div>
+      <div class="account-btn-logout"><a href="/logout">Log out</a></div>
+    </div>
+    </header> 
+
+    <main class="blog-main">
+
+      <div class="blog-sidebar">
+        <ul>
+          <li class="allblog"> All Blogs </li>
+          <li class="newblog"> New Blog </li>
+        </ul>
+      </div>
+
+      <div class="blog-form-container">
+        <div class="create-blog">
+          <form action="/blogs" method="POST">
+            <label for="author">Blog author:</label>
+            <input type="text" id="author" name="author" value="<%= user.username %>" readonly>
+            <label for="title">Blog title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="body">Blog body:</label>
+            <textarea id="body" name="body" required></textarea>
+            <button class="btn">Submit</button>
+          </form>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+<script>
+const li = document.querySelectorAll('li');
+window.onload = function() {
+    li[1].className +=  " active";
+};
+
+li[0].onclick = function() {
+    window.location.href = 'http://localhost:3000/blogs';
+};      
+</script>  
+
+</body>
+</html>

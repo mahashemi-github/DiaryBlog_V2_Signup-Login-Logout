@@ -1,0 +1,21 @@
+{
+  "name": "diaryblog_v2_signup_login_logout_included",
+  "version": "1.0.0",
+  "description": "* _html_\r * _css_\r * _javascript_\r * _node.js_\r * _express_\r * _mongoose_\r * _ejs_\r * _validator_\r * _bcrypt_\r * _dotenv_\r * _jsonwebtoken_\r * _cookie-parser_",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mahashi-github",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.23",
+    "validator": "^13.7.0"
+  }
+}
